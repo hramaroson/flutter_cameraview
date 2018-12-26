@@ -8,18 +8,21 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /** FlutterCamerakitPlugin */
 public class FlutterCamerakitPlugin implements MethodCallHandler {
+  private static final String TAG="FlutterCamerakitPlugin" 
+  
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_camerakit");
-    channel.setMethodCallHandler(new FlutterCamerakitPlugin());
+  
+    channel.setMethodCallHandler( 
+        new FlutterCamerakitPlugin(registrar, registrar.view(), registrar.activity()));
   }
 
   @Override
   public void onMethodCall(MethodCall call, Result result) {
-    if (call.method.equals("getPlatformVersion")) {
-      result.success("Android " + android.os.Build.VERSION.RELEASE);
-    } else {
-      result.notImplemented();
-    }
-  }
+       switch(call.method){
+         default:
+            result.notImplemented();
+            break;
+       }
 }

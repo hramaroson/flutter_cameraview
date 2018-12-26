@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-final MethodChannel _channel = const MethodChannel('plugins.flutter.io/camera')
+final MethodChannel _channel = const MethodChannel('flutter_camerakit')
   ..invokeMethod('init');
 
 enum CameraLensDirection { front, back, external }
