@@ -3,6 +3,7 @@ package io.github.hramaroson.fluttercamerakit;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -12,12 +13,16 @@ import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.view.FlutterView;
 
+import io.github.hramaroson.fluttercamerakit.core.CameraException;
+import io.github.hramaroson.fluttercamerakit.util.Size;
+
 public class FlutterCamerakitPlugin implements MethodCallHandler {
     private static final int CAMERA_REQUEST_ID = 513469796;
     private static final String TAG = "FlutterCamerakitPlugin";
 
     private final FlutterView view;
     private Registrar registrar;
+    private Camera camera;
     private Activity activity;
     private Application.ActivityLifecycleCallbacks activityLifecycleCallbacks;
     private Runnable cameraPermissionContinuation;
@@ -28,6 +33,7 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
         this.activity = activity;
 
         registrar.addRequestPermissionsResultListener(new CameraRequestPermissionsListener());
+
         this.activityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {
@@ -70,7 +76,8 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
      * Plugin registration.
      */
     public static void registerWith(Registrar registrar) {
-        final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_camerakit");
+        final MethodChannel channel = new MethodChannel(registrar.messenger(),
+                "flutter_camerakit");
 
         channel.setMethodCallHandler(
                 new FlutterCamerakitPlugin(registrar, registrar.view(), registrar.activity()));
@@ -80,16 +87,28 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
     public void onMethodCall(MethodCall call, Result result) {
         switch (call.method) {
             case "init": {
+                if(camera != null){
+                    camera.close();
+                }
                 result.success(null);
                 break;
             }
             case "initialize": {
                 String cameraName = call.argument("cameraName");
+                String resolutionPreset = call.argument("resolutionPreset");
+                if(camera != null){
+                    camera.close();
+                }
+                camera = new Camera(cameraName,resolutionPreset, result);
+
                 this.activity.getApplication().registerActivityLifecycleCallbacks(
                         this.activityLifecycleCallbacks);
                 break;
             }
             case "dispose":{
+                if(camera != null){
+                    camera.dispose();
+                }
                 if(this.activity != null && this.activityLifecycleCallbacks !=null){
                     this.activity.getApplication().unregisterActivityLifecycleCallbacks(
                             this.activityLifecycleCallbacks);
@@ -112,6 +131,52 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
                 return true;
             }
             return false;
+        }
+    }
+    private class Camera {
+        private final FlutterView.SurfaceTextureEntry textureEntry;
+        private String cameraName;
+        private Size previewSize;
+
+        public Camera(final String cameraName, final String resolutionPreset,
+                      @NonNull final MethodChannel.Result result) {
+            this.cameraName = cameraName;
+            textureEntry = view.createSurfaceTexture();
+
+            try {
+                Size minPreviewSize;
+                switch(resolutionPreset){
+                    case "high":
+                        minPreviewSize = new Size(1024, 768);
+                        break;
+
+                    case "medium":
+                        minPreviewSize = new Size(640, 480);
+                        break;
+
+                    case "low":
+                        minPreviewSize = new Size(320, 240);
+                        break;
+
+                    default:
+                        throw new IllegalArgumentException("Unkown preset: " + resolutionPreset);
+
+                }
+            }
+            catch (CameraException e){
+                result.error("CameraAccess" ,e.getMessage(),null);
+            }
+            catch (IllegalArgumentException e){
+                result.error("IllegalArgumentException", e.getMessage(),null);
+            }
+        }
+
+        public void close() {
+
+        }
+
+        public void dispose(){
+            close();
         }
     }
 }
