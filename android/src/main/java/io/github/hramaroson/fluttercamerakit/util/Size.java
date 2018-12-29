@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 /**
  * A simple class representing a size, with width and height values.
  */
-public class Size implements Comparable<Size> { 
+public class Size implements Comparable<Size> {
 
     private final int width;
     private final int height;
