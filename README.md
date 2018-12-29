@@ -10,3 +10,7 @@ flutter_camerakit:
     git:
       url: https://github.com/hramaroson/flutter_camerakit.git
 ```
+
+## License
+flutter_camerakit is under [MIT](https://github.com/hramaroson/flutter_camerakit/blob/master/LICENSE) License.
+
