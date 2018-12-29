@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.OrientationEventListener;
 
+import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -176,6 +177,7 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
     }
     private class Camera {
         private final FlutterView.SurfaceTextureEntry textureEntry;
+        private EventChannel.EventSink eventSink;
         private String cameraName;
         private Size previewSize;
 
@@ -183,6 +185,7 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
                       @NonNull final MethodChannel.Result result) {
             this.cameraName = cameraName;
             textureEntry = view.createSurfaceTexture();
+            registerEventChannel();
 
             try {
                 Size minPreviewSize;
@@ -217,6 +220,19 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
                         open(result);
                     }
                 };
+                requestingPermission = false;
+                if (hasCameraPermission()) {
+                    cameraPermissionContinuation.run();
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestingPermission = true;
+                        registrar
+                                .activity()
+                                .requestPermissions(
+                                        new String[] {Manifest.permission.CAMERA},
+                                        CAMERA_REQUEST_ID);
+                    }
+                }
             }
             catch (CameraException e){
                 result.error("CameraAccess" ,e.getMessage(),null);
@@ -224,6 +240,24 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
             catch (IllegalArgumentException e){
                 result.error("IllegalArgumentException", e.getMessage(),null);
             }
+        }
+
+        private void registerEventChannel() {
+            new EventChannel(
+                    registrar.messenger(), "flutter.io/flutterCameraKitPlugin/cameraEvents"
+                    + textureEntry.id())
+                    .setStreamHandler(
+                            new EventChannel.StreamHandler() {
+                                @Override
+                                public void onListen(Object arguments, EventChannel.EventSink eventSink) {
+                                    Camera.this.eventSink = eventSink;
+                                }
+
+                                @Override
+                                public void onCancel(Object arguments) {
+                                    Camera.this.eventSink = null;
+                                }
+                            });
         }
 
         private boolean hasCameraPermission() {
