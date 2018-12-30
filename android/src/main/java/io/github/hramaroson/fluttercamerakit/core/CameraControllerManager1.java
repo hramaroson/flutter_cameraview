@@ -34,6 +34,6 @@ public class CameraControllerManager1 extends CameraControllerManager {
             }
             cameras.add(details);
         }
-        return null;
+        return cameras;
     }
 }
