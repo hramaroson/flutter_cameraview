@@ -5,13 +5,15 @@ import static android.view.OrientationEventListener.ORIENTATION_UNKNOWN;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.OrientationEventListener;
+
+import java.util.List;
+import java.util.Map;
 
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
@@ -22,6 +24,8 @@ import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.view.FlutterView;
 
+import io.github.hramaroson.fluttercamerakit.core.CameraControllerManager;
+import io.github.hramaroson.fluttercamerakit.core.CameraControllerManager1;
 import io.github.hramaroson.fluttercamerakit.core.CameraControllerManager2;
 import io.github.hramaroson.fluttercamerakit.core.CameraException;
 import io.github.hramaroson.fluttercamerakit.util.Size;
@@ -29,6 +33,9 @@ import io.github.hramaroson.fluttercamerakit.util.Size;
 public class FlutterCamerakitPlugin implements MethodCallHandler {
     private static final int CAMERA_REQUEST_ID = 513469796;
     private static final String TAG = "FlutterCamerakitPlugin";
+
+    private static CameraControllerManager cameraManager;
+    private static boolean hasCamera2Support;
 
     private final FlutterView view;
     private Registrar registrar;
@@ -44,6 +51,14 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
         this.registrar = registrar;
         this.view = view;
         this.activity = activity;
+
+        initSupportCamera2(null);
+        if(hasCamera2Support){
+            cameraManager = new CameraControllerManager2(activity);
+        }
+        else {
+            cameraManager = new CameraControllerManager1();
+        }
 
         orientationEventListener = new OrientationEventListener(activity.getApplicationContext()) {
             @Override
@@ -137,6 +152,11 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
                 result.success(null);
                 break;
             }
+            case "availableCameras": {
+                List<Map<String,Object>> cameras = cameraManager.getCameraDescriptionList();
+                result.success(cameras);
+                break;
+            }
             case "initialize": {
                 String cameraName = call.argument("cameraName");
                 String resolutionPreset = call.argument("resolutionPreset");
@@ -166,6 +186,22 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
         }
     }
 
+    private  void initSupportCamera2(@Nullable Result result) {
+        hasCamera2Support = false;
+        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
+            CameraControllerManager2 manager2 = new CameraControllerManager2(activity);
+            hasCamera2Support = true;
+            if( manager2.getNumberOfCameras() == 0 ) {
+                hasCamera2Support = false;
+            }
+            for(int i=0;i<manager2.getNumberOfCameras() && hasCamera2Support;i++) {
+                if( !manager2.allowCamera2Support(i) ) {
+                    hasCamera2Support = false;
+                }
+            }
+        }
+    }
+
     private class CameraRequestPermissionsListener
             implements PluginRegistry.RequestPermissionsResultListener {
         @Override
@@ -182,7 +218,6 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
         private EventChannel.EventSink eventSink;
         private String cameraName;
         private Size previewSize;
-        private boolean hasCamera2Support;
 
         private Camera(final String cameraName, final String resolutionPreset,
                       @NonNull final MethodChannel.Result result) {
@@ -269,6 +304,9 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
                     || (activity.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
         }
         private void open (@Nullable Result result){
+            if(!hasCameraPermission()){
+                if(result != null) result.error("CameraPermission", "Camera permission not granted", null);
+            }
 
         }
         private void close() {
@@ -277,21 +315,6 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
 
         private void dispose(){
             close();
-        }
-        private void initSupportCamera2(@Nullable Result result) {
-            hasCamera2Support = false;
-            if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
-                CameraControllerManager2 manager2 = new CameraControllerManager2(activity);
-                hasCamera2Support = true;
-                if( manager2.getNumberOfCameras() == 0 ) {
-                    hasCamera2Support = false;
-                }
-                for(int i=0;i<manager2.getNumberOfCameras() && hasCamera2Support;i++) {
-                    if( !manager2.allowCamera2Support(i) ) {
-                        hasCamera2Support = false;
-                    }
-                }
-            }
         }
     }
 }
