@@ -18,12 +18,11 @@ public class CameraControllerManager1 extends CameraControllerManager {
     public List<Map<String, Object>> getCameraDescriptionList() {
         List<Map<String,Object>> cameras = new ArrayList<>();
 
-        int camera_count = Camera.getNumberOfCameras();
-        for(int Id=0; Id<camera_count ; Id++){
+        for(int i=0, camera_count = Camera.getNumberOfCameras(); i <camera_count ; i++){
             HashMap<String, Object> details = new HashMap<>();
-            details.put("name", Id);
+            details.put("name", i);
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-            Camera.getCameraInfo(Id, cameraInfo);
+            Camera.getCameraInfo(i, cameraInfo);
             switch (cameraInfo.facing){
                 case Camera.CameraInfo.CAMERA_FACING_FRONT:
                     details.put("lensFacing", "front");

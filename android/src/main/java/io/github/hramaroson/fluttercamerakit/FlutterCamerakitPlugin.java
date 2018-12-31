@@ -213,6 +213,7 @@ public class FlutterCamerakitPlugin implements MethodCallHandler {
             return false;
         }
     }
+
     private class Camera {
         private final FlutterView.SurfaceTextureEntry textureEntry;
         private EventChannel.EventSink eventSink;
