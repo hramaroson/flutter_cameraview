@@ -1,4 +1,4 @@
-package io.github.hramaroson.fluttercamerakit.core;
+package io.github.hramaroson.fluttercamerakit;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class CameraControllerManager2 extends CameraControllerManager {
+class CameraManager2 extends io.github.hramaroson.fluttercamerakit.CameraManager {
     private final Context context;
 
-    public CameraControllerManager2(Context context) {
+    CameraManager2(Context context) {
         this.context = context;
     }
 

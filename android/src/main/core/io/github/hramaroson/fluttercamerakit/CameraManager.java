@@ -1,10 +1,9 @@
-package io.github.hramaroson.fluttercamerakit.core;
+package io.github.hramaroson.fluttercamerakit;
 
 import java.util.List;
 import java.util.Map;
 
-public abstract  class CameraControllerManager {
+abstract class CameraManager {
     public abstract int getNumberOfCameras();
     public abstract List<Map<String,Object>> getCameraDescriptionList();
-
 }

@@ -1,16 +1,16 @@
-package io.github.hramaroson.fluttercamerakit.util;
+package io.github.hramaroson.fluttercamerakit;
 
 import android.support.annotation.NonNull;
 
 /**
  * A simple class representing a size, with width and height values.
  */
-public class Size implements Comparable<Size> {
+class Size implements Comparable<Size> {
 
     private final int width;
     private final int height;
 
-    public Size(int width, int height) {
+    Size(int width, int height) {
         this.width = width;
         this.height = height;
     }

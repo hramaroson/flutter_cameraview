@@ -28,6 +28,11 @@ android {
         minSdkVersion 15
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/core'
+        main.java.srcDirs += 'src/main/utils'
+    }
+
     lintOptions {
         disable 'InvalidPackage'
     }

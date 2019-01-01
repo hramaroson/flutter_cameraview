@@ -1,4 +1,4 @@
-package io.github.hramaroson.fluttercamerakit.core;
+package io.github.hramaroson.fluttercamerakit;
 
 import android.hardware.Camera;
 
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("deprecation")
-public class CameraControllerManager1 extends CameraControllerManager {
+class CameraManager1 extends CameraManager {
     @Override
     public int getNumberOfCameras() {
         return Camera.getNumberOfCameras();
