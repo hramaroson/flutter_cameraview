@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('flutter_camerakit example'),
         ),
-        body:CameraView(),
+        body: CameraView(),
         ),
     );
   }

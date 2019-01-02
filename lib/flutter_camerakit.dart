@@ -27,7 +27,9 @@ class _CameraViewState extends State<CameraView>{
         onPlatformViewCreated: _onPlatformViewCreated,
       );
     }
+    return Text('Unsupported Platform');
   }
+
   void _onPlatformViewCreated(int id) {
     if (widget.onCameraViewCreated == null) {
       return;
