@@ -32,7 +32,7 @@ android {
         main.java.srcDirs += 'src/main/core'
         main.java.srcDirs += 'src/main/views'
         main.java.srcDirs += 'src/main/utils'
-        main.java.srcDirs  += 'src/main/options'
+        main.java.srcDirs += 'src/main/options'
     }
 
     lintOptions {
@@ -40,5 +40,6 @@ android {
     }
     dependencies {
         implementation 'com.android.support:support-annotations:28.0.0'
+	api "com.android.support:exifinterface:27.1.1"
     }
 }
