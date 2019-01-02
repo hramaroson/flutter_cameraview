@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.github.hramaroson.fluttercamerakit">
+    package="com.otaliastudios.cameraview">
 
     <uses-permission android:name="android.permission.CAMERA" />
 
