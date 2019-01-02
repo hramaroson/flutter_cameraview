@@ -30,7 +30,9 @@ android {
     }
     sourceSets {
         main.java.srcDirs += 'src/main/core'
+        main.java.srcDirs += 'src/main/views'
         main.java.srcDirs += 'src/main/utils'
+        main.java.srcDirs  += 'src/main/options'
     }
 
     lintOptions {
