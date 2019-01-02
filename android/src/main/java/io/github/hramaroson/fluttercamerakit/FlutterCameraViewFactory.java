@@ -1,4 +1,4 @@
-package io.github.hramaroson.fluttercamerakit;
+package io.github.hramaroson.fluttercameraview;
 
 import android.app.Activity;
 import android.content.Context;

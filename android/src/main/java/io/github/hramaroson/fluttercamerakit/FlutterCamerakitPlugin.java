@@ -1,8 +1,8 @@
-package io.github.hramaroson.fluttercamerakit;
+package io.github.hramaroson.fluttercameraview;
 
 import io.flutter.plugin.common.PluginRegistry;
 
-public class FlutterCamerakitPlugin {
+public class FlutterCameraViewPlugin {
     public static void registerWith(PluginRegistry.Registrar registrar) {
         registrar
                 .platformViewRegistry()

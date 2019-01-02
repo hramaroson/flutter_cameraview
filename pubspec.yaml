@@ -2,7 +2,7 @@ name: flutter_cameraview
 description: A Flutter plugin for Android and iOS allowing access to the device cameras, a bit deeper!!
 version: 0.0.1
 author: Herizo Ramaroson
-homepage:  https://github.com/hramaroson/flutter_camerakit
+homepage:  https://github.com/hramaroson/flutter_cameraview
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -13,5 +13,5 @@ dependencies:
 
 flutter:
   plugin:
-    androidPackage: io.github.hramaroson.fluttercamerakit
-    pluginClass: FlutterCamerakitPlugin
+    androidPackage: io.github.hramaroson.fluttercameraview
+    pluginClass: FlutterCameraviewPlugin

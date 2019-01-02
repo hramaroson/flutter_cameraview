@@ -1,4 +1,4 @@
-group 'io.github.hramaroson.fluttercamerakit'
+group 'io.github.hramaroson.fluttercameraview'
 version '1.0-SNAPSHOT'
 
 buildscript {
