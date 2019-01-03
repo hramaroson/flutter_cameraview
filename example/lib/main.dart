@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter_camerakit/flutter_camerakit.dart';
+import 'package:flutter_cameraview/flutter_cameraview.dart';
 
 Future<Null> main() async {
   runApp(MyApp());
