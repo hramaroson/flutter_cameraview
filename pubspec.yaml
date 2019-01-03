@@ -14,4 +14,4 @@ dependencies:
 flutter:
   plugin:
     androidPackage: io.github.hramaroson.fluttercameraview
-    pluginClass: FlutterCameraviewPlugin
+    pluginClass: FlutterCameraViewPlugin
