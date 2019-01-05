@@ -24,6 +24,7 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
         mMethodChanel.setMethodCallHandler(this);
 
         activity.getApplication().registerActivityLifecycleCallbacks(this);
+        mCameraView.start();
     }
 
     @Override
