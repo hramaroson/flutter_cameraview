@@ -10,7 +10,7 @@
 .history
 .svn/
 .directory
-
+.project
 # IntelliJ related
 *.iml
 *.ipr
@@ -19,6 +19,7 @@
 
 # Visual Studio Code related
 .vscode/
+.classpath
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -38,6 +39,10 @@ build/
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
+**/android/.project 
+**/android/.settings
+**/android/**/.settings
+
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
