@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('flutter_camerakit example'),
+          title: const Text('flutter_cameraview example'),
         ),
         body: CameraView(),
         ),
