@@ -3,6 +3,9 @@ A Flutter plugin for Android and iOS allowing access to the device cameras, a bi
 
 NB: For Android, the required sdk version is also dropped to 15 or higher (as the official plugin only supports android sdk 21 and higher).
 
+## Features
+* Display live camera preview in widget.
+
 ## Installation
 ### Use flutter_cameraview in a Flutter project
 Add the following section as a [dependency in your pubspec.yaml file](https://flutter.io/using-packages/).
