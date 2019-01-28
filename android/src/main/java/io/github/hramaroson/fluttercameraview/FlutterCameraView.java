@@ -20,7 +20,7 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
 
     FlutterCameraView (Context context, BinaryMessenger messenger, int id, Activity activity){
         mCameraView = new CameraView(context);
-        mMethodChanel = new MethodChannel(messenger, "plugins.hramaroson.github.io/camerakit_" + id);
+        mMethodChanel = new MethodChannel(messenger, "plugins.hramaroson.github.io/cameraview_" + id);
         mMethodChanel.setMethodCallHandler(this);
 
         activity.getApplication().registerActivityLifecycleCallbacks(this);

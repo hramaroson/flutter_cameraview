@@ -23,7 +23,7 @@ class _CameraViewState extends State<CameraView>{
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android) {
       return AndroidView(
-        viewType: 'plugins.hramaroson.github.io/camerakit',
+        viewType: 'plugins.hramaroson.github.io/cameraview',
         onPlatformViewCreated: _onPlatformViewCreated,
       );
     }
@@ -39,7 +39,7 @@ class _CameraViewState extends State<CameraView>{
 }
 class CameraViewController {
   CameraViewController._(int id)
-      : _channel = new MethodChannel('plugins.hramaroson.github.io/camerakit_$id');
+      : _channel = new MethodChannel('plugins.hramaroson.github.io/cameraview_$id');
 
   final MethodChannel _channel;
 

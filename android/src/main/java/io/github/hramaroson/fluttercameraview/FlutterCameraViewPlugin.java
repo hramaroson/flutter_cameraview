@@ -7,7 +7,7 @@ public class FlutterCameraViewPlugin {
         registrar
                 .platformViewRegistry()
                 .registerViewFactory(
-                        "plugins.hramaroson.github.io/camerakit",
+                        "plugins.hramaroson.github.io/cameraview",
                         new FlutterCameraViewFactory(registrar.messenger(), registrar.activity()));
     }
 }
