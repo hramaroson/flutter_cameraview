@@ -22,11 +22,10 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 15
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     lintOptions {
@@ -34,8 +33,7 @@ android {
     }
     
     dependencies {
-        implementation 'com.android.support:support-annotations:28.0.0'
-	    api 'com.android.support:exifinterface:27.1.1'
         api 'com.otaliastudios:cameraview:2.0.0-beta02'
+        api 'androidx.lifecycle:lifecycle-common:2.1.0-alpha01'
     }
 }
