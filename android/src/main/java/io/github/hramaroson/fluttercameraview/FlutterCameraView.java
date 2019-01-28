@@ -64,7 +64,9 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
     public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
 
     @Override
-    public void onActivityDestroyed(Activity activity) {}
+    public void onActivityDestroyed(Activity activity) {
+        mCameraView.destroy();
+    }
 
     @Override
     public void dispose(){
