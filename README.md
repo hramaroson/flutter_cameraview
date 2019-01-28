@@ -23,5 +23,5 @@ flutter run
 ## License
 flutter_cameraview is under [MIT](https://github.com/hramaroson/flutter_cameraview/blob/master/LICENSE) License. 
 ### Third party
-This plugin uses  [Otalia Studios' CameraView](https://github.com/natario1/CameraView) which is under [MIT](https://github.com/natario1/CameraView/blob/master/LICENSE) License.
+This plugin uses [Otalia Studios' CameraView](https://github.com/natario1/CameraView) which is under [MIT](https://github.com/natario1/CameraView/blob/master/LICENSE) License.
 
