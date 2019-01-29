@@ -6,6 +6,21 @@ import 'package:flutter/widgets.dart';
 
 typedef void CameraViewCreatedCallback(CameraViewController controller);
 
+// Flash value indicates the flash mode to be used.
+enum Flash {
+  // Flash is always off.
+  Off,
+
+  // Flash will be on when capturing.
+  On,
+
+  // Flash mode is chosen by the camera.
+  Auto,
+
+  // Flash is always on, working as a torch.
+  Torch,
+}
+
 class CameraView extends StatefulWidget {
   const CameraView({
     Key key,
@@ -43,8 +58,7 @@ class CameraViewController {
 
   final MethodChannel _channel;
 
-//  Future<void> setText(String text) async {
-//    assert(text != null);
-//    return _channel.invokeMethod('setText', text);
-//  }
+  Future<void> setFlash(Flash flash) async {
+    return _channel.invokeMethod('setFlash',);
+  }
 }

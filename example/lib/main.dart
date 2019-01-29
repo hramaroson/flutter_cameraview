@@ -13,6 +13,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  CameraViewController cameraViewController;
   @override
   void initState() {
     super.initState();
@@ -24,8 +25,13 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('flutter_cameraview example'),
         ),
-        body: CameraView(),
+        body: CameraView(
+          onCameraViewCreated: _onCameraViewCreated,
+        ),
         ),
     );
+  }
+  void _onCameraViewCreated(CameraViewController controller){
+      cameraViewController = controller;
   }
 }
