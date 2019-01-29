@@ -8,7 +8,7 @@ NB: For Android, the required sdk version is also dropped to 15 or higher (as th
 
 ## Installation
 ### Use flutter_cameraview in a Flutter project
-Add the following section as a [dependency in your pubspec.yaml file](https://flutter.io/using-packages/).
+This plugin is not published to [Flutter packages site](https://pub.dartlang.org/flutter) yet, but you can use the github development version by adding the following section as a [dependency in your pubspec.yaml file](https://flutter.io/using-packages/).
 ```dart
 flutter_cameraview: 
     git:
