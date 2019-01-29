@@ -59,6 +59,11 @@ class CameraViewController {
   final MethodChannel _channel;
 
   Future<void> setFlash(Flash flash) async {
-    return _channel.invokeMethod('setFlash',);
+    return _channel.invokeMethod('setFlash', flash.index);
+  }
+
+  Future<Flash> getFlash() async {
+    int _flashIndex = await _channel.invokeMethod('getFlash');
+    return Flash.values[_flashIndex];
   }
 }

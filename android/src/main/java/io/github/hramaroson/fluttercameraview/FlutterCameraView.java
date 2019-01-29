@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.Audio;
+import com.otaliastudios.cameraview.Flash;
 
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
@@ -19,7 +20,7 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
     private final CameraView mCameraView;
     private final MethodChannel mMethodChanel;
 
-    FlutterCameraView (Context context, BinaryMessenger messenger, int id, Activity activity){
+    FlutterCameraView(Context context, BinaryMessenger messenger, int id, Activity activity){
         mCameraView = new CameraView(context);
         mCameraView.setAudio(Audio.OFF);
         mMethodChanel = new MethodChannel(messenger, "plugins.hramaroson.github.io/cameraview_" + id);
@@ -30,17 +31,24 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
     }
 
     @Override
-    public View getView () {
+    public View getView() {
         return mCameraView;
     }
 
     @Override
     public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
         switch (methodCall.method) {
+            case "setFlash": 
+                setFlash(methodCall, result);
+                break;
+            case "getFlash":
+                getFlash(methodCall, result);
+                break;
             default:
                 result.notImplemented();
         }
     }
+
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
 
@@ -48,7 +56,7 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
     public void onActivityStarted(Activity activity) {}
 
     @Override
-    public void onActivityResumed(Activity activity) {
+    public void onActivityResumed (Activity activity) {
         mCameraView.open();
     }
 
@@ -73,5 +81,45 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
     @Override
     public void dispose(){
         mCameraView.destroy();
+    }
+
+    private static Flash __flashValueFromIndex(int index){
+        switch (index){
+            case 0:
+              return Flash.OFF;
+            case 1:
+              return Flash.ON;
+            case 2:
+              return Flash.AUTO;
+            case 3:
+              return Flash.TORCH;
+            default:
+              break;
+        }
+        return Flash.OFF;
+    }
+
+    private int __flashIndexFromValue(Flash flash){
+        switch (flash){
+            case OFF:
+                return 0;
+            case ON:
+                return 1;
+            case AUTO:
+                return 2;
+            case TORCH:
+                return 3;
+            default:
+                break;
+        }
+        return 0;
+    }
+    private void setFlash(MethodCall methodCall, MethodChannel.Result result){
+        mCameraView.setFlash(__flashValueFromIndex((int) methodCall.arguments));
+        result.success (null);
+    }
+    
+    private void getFlash(MethodCall methodCall, MethodChannel.Result result){
+        result.success(__flashIndexFromValue(mCameraView.getFlash()));
     }
 }
