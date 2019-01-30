@@ -5,6 +5,7 @@ NB: For Android, the required sdk version is also dropped to 15 or higher (as th
 
 ## Features
 * Display live camera preview in widget.
+* Control flash
 
 ## Installation
 ### Use flutter_cameraview in a Flutter project
