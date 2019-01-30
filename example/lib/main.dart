@@ -15,6 +15,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   CameraViewController _cameraViewController; 
   Icon _flashButtonIcon = Icon(Icons.flash_off);
+
   @override
   void initState() {
     super.initState();
@@ -37,11 +38,15 @@ class _MyAppState extends State<MyApp> {
               right: 8.0,
               width: 40.0,
               height: 40.0,
-              child: IconButton(
-                color: Colors.white,
-                icon: _flashButtonIcon,
-                onPressed: _onFlashButtonPressed,
-              ),
+              child: new Builder(
+                builder: (BuildContext context){
+                    return new IconButton(
+                        color: Colors.white,
+                        icon: _flashButtonIcon,
+                        onPressed:  () => _onFlashButtonPressed (context),
+                    );
+                }
+              ), 
             ),
           ],
         ),
@@ -53,31 +58,46 @@ class _MyAppState extends State<MyApp> {
       _cameraViewController = controller;
   }
 
-  void _onFlashButtonPressed() async {
+  void _onFlashButtonPressed(BuildContext context) async {
       Flash flash = await _cameraViewController.getFlash();
-      Icon _icon;
+      Icon icon;
+      String snackBarText;
       switch(flash) {
         case Flash.Off:
           flash = Flash.On;
-          _icon = Icon(Icons.flash_on);
+          snackBarText = "Flash On";
+          icon = Icon(Icons.flash_on);
           break;
+
         case Flash.On:
           flash = Flash.Auto;
-          _icon = Icon(Icons.flash_auto);
+          snackBarText = "Flash Auto";
+          icon = Icon(Icons.flash_auto);
           break;
+
         case Flash.Auto:
           flash = Flash.Torch;
-          _icon = Icon(Icons.highlight);
+          snackBarText = "Torch Mode";
+          icon = Icon(Icons.highlight);
           break;
+
         case Flash.Torch:
           flash = Flash.Off;
-          _icon = Icon(Icons.flash_off);
+          snackBarText = "Flash Off";
+          icon = Icon(Icons.flash_off);
           break;
       }
+      
       await _cameraViewController.setFlash(flash);
 
       setState(() {
-        _flashButtonIcon = _icon;
+        _flashButtonIcon = icon;
       });
+
+      final scaffold = Scaffold.of(context);
+      scaffold.removeCurrentSnackBar();
+      scaffold.showSnackBar(SnackBar(
+        content: Text(snackBarText) ,
+        duration: const Duration(seconds: 1)));
   }
 }
