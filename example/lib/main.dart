@@ -7,12 +7,27 @@ Future<Null> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        title: "flutter_cameraview example",
+        theme: new ThemeData(
+            primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage()
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
+class MyHomePage extends StatefulWidget  {
+  MyHomePage({Key key}) : super(key: key);
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   CameraViewController _cameraViewController; 
   Icon _flashButtonIcon = Icon(Icons.flash_off);
 
@@ -33,6 +48,8 @@ class _MyAppState extends State<MyApp> {
             CameraView(
               onCameraViewCreated: _onCameraViewCreated
             ),
+            
+            //Flash button
             Positioned(
               top: 8.0,
               right: 8.0,
@@ -47,6 +64,22 @@ class _MyAppState extends State<MyApp> {
                     );
                 }
               ), 
+            ),
+
+            //Capture button
+            Positioned(
+              bottom: 20.0,
+              width: 60.0,
+              height: 60.0,
+              left: (MediaQuery.of(context).size.width/2 - 30),
+              child: new RaisedButton(
+                padding: EdgeInsets.all(10.0),
+                shape: new RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                ),
+                child: new Icon(Icons.camera_alt, size: 25.0, color: Colors.blue),
+                onPressed: (){},
+              ),
             ),
           ],
         ),
