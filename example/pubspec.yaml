@@ -20,6 +20,8 @@ dev_dependencies:
   flutter_cameraview:
     path: ../
 
+  fluttertoast: ^2.2.11
+
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter_cameraview/flutter_cameraview.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 Future<Null> main() async {
   runApp(MyApp());
@@ -55,15 +56,11 @@ class _MyHomePageState extends State<MyHomePage> {
               right: 8.0,
               width: 40.0,
               height: 40.0,
-              child: new Builder(
-                builder: (BuildContext context){
-                    return new IconButton(
-                        color: Colors.white,
-                        icon: _flashButtonIcon,
-                        onPressed:  () => _onFlashButtonPressed (context),
-                    );
-                }
-              ), 
+              child: new IconButton(
+                  color: Colors.white,
+                  icon: _flashButtonIcon,
+                  onPressed:  () => _onFlashButtonPressed (context),
+              ),
             ),
 
             //Capture button
@@ -94,29 +91,29 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onFlashButtonPressed(BuildContext context) async {
       Flash flash = await _cameraViewController.getFlash();
       Icon icon;
-      String snackBarText;
+      String _msg;
       switch(flash) {
         case Flash.Off:
           flash = Flash.On;
-          snackBarText = "Flash On";
+          _msg = "Flash On";
           icon = Icon(Icons.flash_on);
           break;
 
         case Flash.On:
           flash = Flash.Auto;
-          snackBarText = "Flash Auto";
+          _msg = "Flash Auto";
           icon = Icon(Icons.flash_auto);
           break;
 
         case Flash.Auto:
           flash = Flash.Torch;
-          snackBarText = "Torch Mode";
+          _msg = "Torch Mode";
           icon = Icon(Icons.highlight);
           break;
 
         case Flash.Torch:
           flash = Flash.Off;
-          snackBarText = "Flash Off";
+          _msg = "Flash Off";
           icon = Icon(Icons.flash_off);
           break;
       }
@@ -127,10 +124,14 @@ class _MyHomePageState extends State<MyHomePage> {
         _flashButtonIcon = icon;
       });
 
-      final scaffold = Scaffold.of(context);
-      scaffold.removeCurrentSnackBar();
-      scaffold.showSnackBar(SnackBar(
-        content: Text(snackBarText) ,
-        duration: const Duration(seconds: 1)));
+      Fluttertoast.showToast(
+          msg: _msg,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
   }
 }
