@@ -130,8 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
           gravity: ToastGravity.CENTER,
           timeInSecForIos: 1,
           backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0
+          textColor: Colors.white
       );
   }
 }
