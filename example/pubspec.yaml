@@ -20,6 +20,7 @@ dev_dependencies:
   flutter_cameraview:
     path: ../
 
+  # Later versions of fluttertoast don't support androidX
   fluttertoast: ">=2.2.4 <=2.2.5"
 
 # For information on the generic Dart part of this file, see the
