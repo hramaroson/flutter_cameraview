@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Stack(
           children: <Widget>[
             CameraView(
-              onCameraViewCreated: _onCameraViewCreated
+              onCreated: _onCameraViewCreated
             ),
             
             //Flash button
@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
 
-            //Capture button
+            //Picture capture button
             Positioned(
               bottom: 20.0,
               width: 60.0,
@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.all(Radius.circular(40.0)),
                 ),
                 child: new Icon(Icons.camera_alt, size: 25.0, color: Colors.blue),
-                onPressed: (){},
+                onPressed: () => _onTakePictureButtonClicked,
               ),
             ),
           ],
@@ -132,5 +132,9 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.black,
           textColor: Colors.white
       );
+  }
+
+  void _onTakePictureButtonClicked() async {
+
   }
 }

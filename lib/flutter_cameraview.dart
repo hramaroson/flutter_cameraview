@@ -24,10 +24,10 @@ enum Flash {
 class CameraView extends StatefulWidget {
   const CameraView({
     Key key,
-    this.onCameraViewCreated,
+    this.onCreated,
   }) : super(key: key);
 
-  final CameraViewCreatedCallback onCameraViewCreated;
+  final CameraViewCreatedCallback onCreated;
 
   @override
   State<StatefulWidget> createState() => _CameraViewState();
@@ -46,10 +46,10 @@ class _CameraViewState extends State<CameraView>{
   }
 
   void _onPlatformViewCreated(int id) {
-    if (widget.onCameraViewCreated == null) {
+    if (widget.onCreated == null) {
       return;
     }
-    widget.onCameraViewCreated(new CameraViewController._(id));
+    widget.onCreated(new CameraViewController._(id));
   }
 }
 class CameraViewController {
