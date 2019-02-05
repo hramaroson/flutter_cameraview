@@ -44,6 +44,8 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
             case "getFlash":
                 getFlash(methodCall, result);
                 break;
+            case "takePicture":
+                break;
             default:
                 result.notImplemented();
         }
@@ -53,7 +55,9 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {}
 
     @Override
-    public void onActivityStarted(Activity activity) {}
+    public void onActivityStarted(Activity activity) {
+        mCameraView.open();
+    }
 
     @Override
     public void onActivityResumed (Activity activity) {
