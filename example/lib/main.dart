@@ -75,9 +75,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.all(Radius.circular(40.0)),
                 ),
                 child: new Icon(Icons.camera_alt, size: 25.0, color: Colors.blue),
-                onPressed: () => _onTakePictureButtonClicked,
+                onPressed: () => _onTakePictureButtonPressed,
               ),
             ),
+
+            //Settings button
+            Positioned(
+              bottom: 20.0,
+              width: 60.0,
+              height: 60.0,
+              right: 15.0,
+              child: new RaisedButton(
+                padding: EdgeInsets.all(10.0),
+                shape: new RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                ),
+                child: new Icon(Icons.settings, size: 25.0, color: Colors.blue),
+                onPressed: () => _onSettingsButtonPressed,
+              ),
+            )
           ],
         ),
       ),
@@ -134,7 +150,11 @@ class _MyHomePageState extends State<MyHomePage> {
       );
   }
 
-  void _onTakePictureButtonClicked() async {
+  void _onTakePictureButtonPressed() async {
+
+  }
+
+  void _onSettingsButtonPressed() async {
 
   }
 }
