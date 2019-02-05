@@ -52,6 +52,17 @@ class _CameraViewState extends State<CameraView>{
     widget.onCreated(new CameraViewController._(id));
   }
 }
+
+class CameraException implements Exception {
+  CameraException(this.code, this.description);
+
+  String code;
+  String description;
+
+  @override
+  String toString() => '$runtimeType($code, $description)';
+}
+
 class CameraViewController {
   CameraViewController._(int id)
       : _channel = new MethodChannel('plugins.hramaroson.github.io/cameraview_$id');
@@ -59,11 +70,23 @@ class CameraViewController {
   final MethodChannel _channel;
 
   Future<void> setFlash(Flash flash) async {
-    return _channel.invokeMethod('setFlash', flash.index);
+    try {
+      return _channel.invokeMethod('setFlash', flash.index);
+    } on PlatformException catch (e){
+      throw CameraException(e.code, e.message);
+    } 
   }
 
   Future<Flash> getFlash() async {
-    int _flashIndex = await _channel.invokeMethod('getFlash');
-    return Flash.values[_flashIndex];
+    try {
+      int _flashIndex = await _channel.invokeMethod('getFlash');
+      return Flash.values[_flashIndex];
+    } on PlatformException catch (e){
+      throw CameraException(e.code, e.message);
+    } 
+  }
+
+  Future<void> takePicture(String filepath) async {
+      
   }
 }
