@@ -58,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 40.0,
               child: new IconButton(
                   color: Colors.white,
+                  iconSize: 25.0,
                   icon: _flashButtonIcon,
                   onPressed:  () => _onFlashButtonPressed (context),
               ),
@@ -74,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 shape: new RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(40.0)),
                 ),
-                child: new Icon(Icons.camera_alt, size: 25.0, color: Colors.blue),
+                child: new Icon(Icons.camera_alt, size: 30.0, color: Colors.blue),
                 onPressed: () => _onTakePictureButtonPressed,
               ),
             ),
@@ -82,15 +83,12 @@ class _MyHomePageState extends State<MyHomePage> {
             //Settings button
             Positioned(
               bottom: 20.0,
-              width: 60.0,
-              height: 60.0,
+              width: 40.0,
+              height: 40.0,
               right: 15.0,
-              child: new RaisedButton(
-                padding: EdgeInsets.all(10.0),
-                shape: new RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                ),
-                child: new Icon(Icons.settings, size: 25.0, color: Colors.blue),
+              child: new IconButton(
+                color: Colors.white,
+                icon: new Icon(Icons.settings, size: 25.0),
                 onPressed: () => _onSettingsButtonPressed,
               ),
             )
