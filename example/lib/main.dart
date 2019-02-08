@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:flutter_cameraview/flutter_cameraview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'settings_page.dart';
+
 Future<Null> main() async {
   runApp(MyApp());
 }
@@ -89,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: new IconButton(
                 color: Colors.white,
                 icon: new Icon(Icons.settings, size: 25.0),
-                onPressed: () => _onSettingsButtonPressed,
+                onPressed: () => _onSettingsButtonPressed (context),
               ),
             )
           ],
@@ -149,10 +151,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onTakePictureButtonPressed() async {
-
+   
   }
 
-  void _onSettingsButtonPressed() async {
-
+  void _onSettingsButtonPressed(BuildContext context) async {
+     Navigator.push(context, new MaterialPageRoute(builder: (context) => new SettingsPage()));
   }
 }
