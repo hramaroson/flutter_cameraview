@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter_cameraview/flutter_cameraview.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'settings_page.dart';
 
@@ -58,12 +57,12 @@ class _MyHomePageState extends State<MyHomePage> {
               right: 8.0,
               width: 40.0,
               height: 40.0,
-              child: new IconButton(
+              child: new Builder (builder: (BuildContext _context) {return new IconButton(
                   color: Colors.white,
                   iconSize: 25.0,
                   icon: _flashButtonIcon,
-                  onPressed:  () => _onFlashButtonPressed (context),
-              ),
+                  onPressed:  () => _onFlashButtonPressed (_context),
+              );}) 
             ),
 
             //Picture capture button
@@ -140,14 +139,9 @@ class _MyHomePageState extends State<MyHomePage> {
         _flashButtonIcon = icon;
       });
 
-      Fluttertoast.showToast(
-          msg: _msg,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white
-      );
+      ScaffoldState scaffoldState = Scaffold.of(context);
+      scaffoldState.removeCurrentSnackBar();
+      scaffoldState.showSnackBar(new SnackBar(content: new Text(_msg) , duration: Duration( seconds: 2)));
   }
 
   void _onTakePictureButtonPressed() async {

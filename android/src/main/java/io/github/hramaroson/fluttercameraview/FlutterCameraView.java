@@ -19,8 +19,10 @@ import io.flutter.plugin.platform.PlatformView;
 public class FlutterCameraView implements PlatformView, MethodCallHandler, Application.ActivityLifecycleCallbacks {
     private final CameraView mCameraView;
     private final MethodChannel mMethodChanel;
+    private final Context mContext;
 
     FlutterCameraView(Context context, BinaryMessenger messenger, int id, Activity activity){
+        mContext = context;
         mCameraView = new CameraView(context);
         mCameraView.setAudio(Audio.OFF);
         mMethodChanel = new MethodChannel(messenger, "plugins.hramaroson.github.io/cameraview_" + id);
@@ -56,11 +58,10 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
 
     @Override
     public void onActivityStarted(Activity activity) {
-        mCameraView.open();
     }
 
     @Override
-    public void onActivityResumed (Activity activity) {
+    public void onActivityResumed (Activity activity) { 
         mCameraView.open();
     }
 
