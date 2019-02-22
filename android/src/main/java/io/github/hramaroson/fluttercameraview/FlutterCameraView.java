@@ -40,6 +40,9 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
     @Override
     public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
         switch (methodCall.method) {
+            case "isOpened":
+                isOpened(methodCall, result);
+                break;
             case "setFlash": 
                 setFlash(methodCall, result);
                 break;
@@ -86,6 +89,10 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
     @Override
     public void dispose(){
         mCameraView.destroy();
+    }
+
+    private void isOpened(MethodCall methodCall, MethodChannel.Result result) {
+        result.success(mCameraView.isOpened());
     }
 
     private static Flash __flashValueFromIndex(int index){

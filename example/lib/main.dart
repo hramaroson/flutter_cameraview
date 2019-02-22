@@ -81,6 +81,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
 
+
+            //Camera facing button
+            Positioned(
+              bottom: 120,
+              width: 40.0,
+              height: 40.0,
+              right: 15.0,
+              child: new IconButton(
+                color: Colors.white,
+                icon: new Icon(Icons.switch_camera, size: 25.0),
+                onPressed: () => _onCameraFacingButtonPressed,
+              ),
+            ),
+
             //Settings button
             Positioned(
               bottom: 20.0,
@@ -145,7 +159,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onTakePictureButtonPressed() async {
-   
+    //_cameraViewController.takePicture(filepath);
+  }
+
+  void _onCameraFacingButtonPressed() async {
+
   }
 
   void _onSettingsButtonPressed(BuildContext context) async {

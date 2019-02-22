@@ -69,6 +69,13 @@ class CameraViewController {
 
   final MethodChannel _channel;
 
+  Future<bool> isOpened() async {
+    try {
+       return _channel.invokeMethod('isOpened');
+    } on PlatformException catch (e){
+      throw CameraException(e.code, e.message);
+    } 
+  }
   Future<void> setFlash(Flash flash) async {
     try {
       return _channel.invokeMethod('setFlash', flash.index);
@@ -87,6 +94,10 @@ class CameraViewController {
   }
 
   Future<void> takePicture(String filepath) async {
-      
+      try {
+        return _channel.invokeMethod('takePicture', filepath);
+      } on PlatformException catch (e) {
+        throw CameraException(e.code, e.message);;
+      }
   }
 }
