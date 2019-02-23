@@ -6,6 +6,11 @@ import 'package:flutter/widgets.dart';
 
 typedef void CameraViewCreatedCallback(CameraViewController controller);
 
+enum Facing {
+  Back,
+  Front
+}
+
 // Flash value indicates the flash mode to be used.
 enum Flash {
   // Flash is always off.
@@ -76,6 +81,24 @@ class CameraViewController {
       throw CameraException(e.code, e.message);
     } 
   }
+
+  Future<void> setFacing(Facing facing) async {
+    try {
+       return _channel.invokeMethod('setFacing', facing.index);
+    } on PlatformException catch (e){
+      throw CameraException(e.code, e.message);
+    } 
+  }
+
+  Future<Facing> getFacing() async {
+    try {
+      int _facingIndex = await _channel.invokeMethod('getFacing');
+      return Facing.values[_facingIndex];
+    } on PlatformException catch (e){
+      throw CameraException(e.code, e.message);
+    } 
+  }
+
   Future<void> setFlash(Flash flash) async {
     try {
       return _channel.invokeMethod('setFlash', flash.index);

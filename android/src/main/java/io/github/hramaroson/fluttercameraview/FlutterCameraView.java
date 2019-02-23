@@ -9,6 +9,7 @@ import android.view.View;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.Audio;
 import com.otaliastudios.cameraview.Flash;
+import com.otaliastudios.cameraview.Facing;
 
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
@@ -42,6 +43,12 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
         switch (methodCall.method) {
             case "isOpened":
                 isOpened(methodCall, result);
+                break;
+            case "getFacing":
+                getFacing(methodCall, result);
+                break;
+            case "setFacing":
+                setFacing(methodCall, result);
                 break;
             case "setFlash": 
                 setFlash(methodCall, result);
@@ -91,8 +98,28 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
         mCameraView.destroy();
     }
 
-    private void isOpened(MethodCall methodCall, MethodChannel.Result result) {
-        result.success(mCameraView.isOpened());
+    private static Facing __facingValueFromIndex(int index){
+        switch (index){
+            case 0:
+              return Facing.BACK;
+            case 1:
+              return Facing.FRONT;
+            default:
+              break;
+        }
+        return Facing.BACK;
+    }
+
+    private static int __facingIndexFromValue (Facing facing){
+        switch (facing){
+            case BACK:
+                return 0;
+            case FRONT:
+                return 1;
+            default:
+                break;
+        }
+        return 0;
     }
 
     private static Flash __flashValueFromIndex(int index){
@@ -111,7 +138,7 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
         return Flash.OFF;
     }
 
-    private int __flashIndexFromValue(Flash flash){
+    private static int __flashIndexFromValue(Flash flash){
         switch (flash){
             case OFF:
                 return 0;
@@ -126,6 +153,20 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
         }
         return 0;
     }
+
+    private void isOpened(MethodCall methodCall, MethodChannel.Result result) {
+        result.success(mCameraView.isOpened());
+    }
+
+    private void setFacing(MethodCall methodCall, MethodChannel.Result result){
+        mCameraView.setFacing(__facingValueFromIndex((int) methodCall.arguments));
+        result.success (null);
+    }
+
+    private void getFacing(MethodCall methodCall, MethodChannel.Result result){
+        result.success(__facingIndexFromValue(mCameraView.getFacing()));
+    }
+
     private void setFlash(MethodCall methodCall, MethodChannel.Result result){
         mCameraView.setFlash(__flashValueFromIndex((int) methodCall.arguments));
         result.success (null);

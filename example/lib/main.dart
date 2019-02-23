@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter_cameraview/flutter_cameraview.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'settings_page.dart';
 
@@ -57,12 +58,12 @@ class _MyHomePageState extends State<MyHomePage> {
               right: 8.0,
               width: 40.0,
               height: 40.0,
-              child: new Builder (builder: (BuildContext _context) {return new IconButton(
+              child: IconButton(
                   color: Colors.white,
                   iconSize: 25.0,
                   icon: _flashButtonIcon,
-                  onPressed:  () => _onFlashButtonPressed (_context),
-              );}) 
+                  onPressed:  () => _onFlashButtonPressed()
+                  ) 
             ),
 
             //Picture capture button
@@ -77,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.all(Radius.circular(40.0)),
                 ),
                 child: new Icon(Icons.camera_alt, size: 30.0, color: Colors.blue),
-                onPressed: () => _onTakePictureButtonPressed,
+                onPressed: () => _onTakePictureButtonPressed(),
               ),
             ),
 
@@ -90,8 +91,8 @@ class _MyHomePageState extends State<MyHomePage> {
               right: 15.0,
               child: new IconButton(
                 color: Colors.white,
-                icon: new Icon(Icons.switch_camera, size: 25.0),
-                onPressed: () => _onCameraFacingButtonPressed,
+                icon: Icon(Icons.switch_camera, size: 25),
+                onPressed: () => _onCameraFacingButtonPressed()
               ),
             ),
 
@@ -104,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: new IconButton(
                 color: Colors.white,
                 icon: new Icon(Icons.settings, size: 25.0),
-                onPressed: () => _onSettingsButtonPressed (context),
+                onPressed: () => _onSettingsButtonPressed(context),
               ),
             )
           ],
@@ -117,32 +118,32 @@ class _MyHomePageState extends State<MyHomePage> {
       _cameraViewController = controller;
   }
 
-  void _onFlashButtonPressed(BuildContext context) async {
+  void _onFlashButtonPressed() async {
       Flash flash = await _cameraViewController.getFlash();
       Icon icon;
-      String _msg;
+      String msg;
       switch(flash) {
         case Flash.Off:
           flash = Flash.On;
-          _msg = "Flash On";
+          msg = "Flash On";
           icon = Icon(Icons.flash_on);
           break;
 
         case Flash.On:
           flash = Flash.Auto;
-          _msg = "Flash Auto";
+          msg = "Flash Auto";
           icon = Icon(Icons.flash_auto);
           break;
 
         case Flash.Auto:
           flash = Flash.Torch;
-          _msg = "Torch Mode";
+          msg = "Torch Mode";
           icon = Icon(Icons.highlight);
           break;
 
         case Flash.Torch:
           flash = Flash.Off;
-          _msg = "Flash Off";
+          msg = "Flash Off";
           icon = Icon(Icons.flash_off);
           break;
       }
@@ -153,9 +154,8 @@ class _MyHomePageState extends State<MyHomePage> {
         _flashButtonIcon = icon;
       });
 
-      ScaffoldState scaffoldState = Scaffold.of(context);
-      scaffoldState.removeCurrentSnackBar();
-      scaffoldState.showSnackBar(new SnackBar(content: new Text(_msg) , duration: Duration( seconds: 2)));
+      Fluttertoast.cancel();
+      Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_SHORT , gravity: ToastGravity.CENTER);
   }
 
   void _onTakePictureButtonPressed() async {
@@ -163,7 +163,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onCameraFacingButtonPressed() async {
+    Facing facing = await _cameraViewController.getFacing();
+    String msg;
+    if( facing == Facing.Back) {
+      facing = Facing.Front;
+      msg = "Front camera";
+    }
+    else {
+      facing = Facing.Back;
+      msg = "Back camera";
+    }
+    await _cameraViewController.setFacing(facing);
 
+
+    Fluttertoast.cancel();
+    Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_SHORT , gravity: ToastGravity.CENTER);
   }
 
   void _onSettingsButtonPressed(BuildContext context) async {
