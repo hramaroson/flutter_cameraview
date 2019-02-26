@@ -154,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _flashButtonIcon = icon;
       });
 
-      Fluttertoast.cancel();
+      Fluttertoast.cancel(); //Hides the previous toast message
       Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_SHORT , gravity: ToastGravity.CENTER);
   }
 
