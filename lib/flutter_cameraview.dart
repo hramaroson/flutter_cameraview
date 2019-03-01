@@ -120,7 +120,7 @@ class CameraViewController {
       try {
         return _channel.invokeMethod('takePicture', filepath);
       } on PlatformException catch (e) {
-        throw CameraException(e.code, e.message);;
+        throw CameraException(e.code, e.message);
       }
   }
 }
