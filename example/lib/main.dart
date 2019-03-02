@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_cameraview/flutter_cameraview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'settings_page.dart';
 
@@ -85,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //Camera facing button
             Positioned(
-              bottom: 120,
+              bottom:  (MediaQuery.of(context).size.height/2 - 20),
               width: 40.0,
               height: 40.0,
               right: 15.0,
@@ -98,10 +100,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //Settings button
             Positioned(
-              bottom: 20.0,
+              bottom: 40.0,
               width: 40.0,
               height: 40.0,
-              right: 15.0,
+              right: 15.0, 
               child: new IconButton(
                 color: Colors.white,
                 icon: new Icon(Icons.settings, size: 25.0),
@@ -177,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if(! await _cameraViewController.isOpened()) {
         showToast("Error: Camera not opened!");
     }
-    
+    Directory directory = await getExternalStorageDirectory();
     //_cameraViewController.takePicture(filepath);
   }
 
