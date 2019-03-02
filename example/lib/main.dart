@@ -154,12 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _flashButtonIcon = icon;
       });
 
-      Fluttertoast.cancel(); //Hides the previous toast message
-      Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_SHORT , gravity: ToastGravity.CENTER);
-  }
-
-  void _onTakePictureButtonPressed() async {
-    //_cameraViewController.takePicture(filepath);
+      showToast(msg);
   }
 
   void _onCameraFacingButtonPressed() async {
@@ -175,12 +170,23 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     await _cameraViewController.setFacing(facing);
 
+    showToast(msg);
+  }
 
-    Fluttertoast.cancel();
-    Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_SHORT , gravity: ToastGravity.CENTER);
+  void _onTakePictureButtonPressed() async {
+    if(! await _cameraViewController.isOpened()) {
+        showToast("Error: Camera not opened!");
+    }
+    
+    //_cameraViewController.takePicture(filepath);
   }
 
   void _onSettingsButtonPressed(BuildContext context) async {
      Navigator.push(context, new MaterialPageRoute(builder: (context) => new SettingsPage()));
+  }
+
+  void showToast(String msg){
+    Fluttertoast.cancel(); //Hides previous toast message
+    Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_SHORT , gravity: ToastGravity.CENTER);
   }
 }
