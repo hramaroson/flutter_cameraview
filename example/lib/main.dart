@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter_cameraview/flutter_cameraview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'settings_page.dart';
 
@@ -87,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //Camera facing button
             Positioned(
-              bottom:  (MediaQuery.of(context).size.height/2 - 20),
+              bottom:  (MediaQuery.of(context).size.height/2 - 80),
               width: 40.0,
               height: 40.0,
               right: 15.0,
@@ -100,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //Settings button
             Positioned(
-              bottom: 40.0,
+              bottom: 100.0,
               width: 40.0,
               height: 40.0,
               right: 15.0, 
@@ -121,6 +119,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onFlashButtonPressed() async {
+      if(! await _cameraViewController.isOpened()) {
+          showToast("Error: Camera not opened!");
+          return;
+      }
+      
       Flash flash = await _cameraViewController.getFlash();
       Icon icon;
       String msg;
@@ -160,6 +163,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onCameraFacingButtonPressed() async {
+    if(! await _cameraViewController.isOpened()) {
+        showToast("Error: Camera not opened!");
+        return;
+    }
+
     Facing facing = await _cameraViewController.getFacing();
     String msg;
     if( facing == Facing.Back) {
@@ -178,9 +186,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onTakePictureButtonPressed() async {
     if(! await _cameraViewController.isOpened()) {
         showToast("Error: Camera not opened!");
+        return;
     }
-    Directory directory = await getExternalStorageDirectory();
-    //_cameraViewController.takePicture(filepath);
+    _cameraViewController.takePicture().then((String filePath) {
+      showToast("Image saved to " + filePath); }
+    );
   }
 
   void _onSettingsButtonPressed(BuildContext context) async {

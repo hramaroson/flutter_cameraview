@@ -1,8 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:sprintf/sprintf.dart';
 
 typedef void CameraViewCreatedCallback(CameraViewController controller);
 
@@ -116,11 +121,27 @@ class CameraViewController {
     } 
   }
 
-  Future<void> takePicture(String filepath) async {
-      try {
-        return _channel.invokeMethod('takePicture', filepath);
-      } on PlatformException catch (e) {
-        throw CameraException(e.code, e.message);
+  Future<String> takePicture([String filePath = '']) async {
+    String _filePath = filePath;
+    if(_filePath.isEmpty) { //no filePath provided, use the default one.
+      if(!Platform.isIOS) {
+          Directory directory = await getExternalStorageDirectory();
+          _filePath = directory.path;
+          if(Platform.isAndroid) {
+              _filePath = p.join(_filePath, "DCIM","Camera");
+              Directory(_filePath).create(recursive: true);
+              DateTime now = DateTime.now();
+              _filePath = p.join(_filePath, sprintf("IMG_%d%02d%02d_%02d%02d%02d.jpg", 
+                [now.year, now.month, now.day, now.hour, now.minute, now.second]));
+          }
       }
+    }
+    try {
+      await _channel.invokeMethod('takePicture', _filePath);
+    } on PlatformException catch (e) {
+        throw CameraException(e.code, e.message);
+        return null;
+    }
+    return _filePath;
   }
 }

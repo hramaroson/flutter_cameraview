@@ -11,8 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-dev_dependencies:
-   path_provider: ^0.5.0
+  path: ^1.6.2
+  path_provider: ^0.5.0+1
+  sprintf: ^4.0.2 
 
 flutter:
   plugin:

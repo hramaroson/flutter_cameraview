@@ -57,6 +57,7 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
                 getFlash(methodCall, result);
                 break;
             case "takePicture":
+                takePicture(methodCall, result);
                 break;
             default:
                 result.notImplemented();
@@ -68,6 +69,7 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
 
     @Override
     public void onActivityStarted(Activity activity) {
+        mCameraView.open();
     }
 
     @Override
@@ -174,5 +176,10 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler, Appli
     
     private void getFlash(MethodCall methodCall, MethodChannel.Result result){
         result.success(__flashIndexFromValue(mCameraView.getFlash()));
+    }
+
+    private void takePicture(MethodCall methodCall, MethodChannel.Result result) {
+        String filePath = (String) methodCall.arguments;
+        result.success (filePath);
     }
 }
