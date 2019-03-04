@@ -34,7 +34,7 @@ class MyHomePage extends StatefulWidget  {
 class _MyHomePageState extends State<MyHomePage> {
   CameraViewController _cameraViewController; 
   Icon _flashButtonIcon = Icon(Icons.flash_off);
-  File _thumbnailImage;
+  Image _thumbnailImage;
 
   @override
   void initState() {
@@ -119,10 +119,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 shape: new CircleBorder(),
                 padding: EdgeInsets.all(0),
                 child: CircleAvatar( 
-                  minRadius: 20.0,
-                  maxRadius: 20.0,
                   backgroundColor: Colors.black,
-                  backgroundImage: _thumbnailImage == null ? null : FileImage(_thumbnailImage)
+                  radius: 20.0,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: _thumbnailImage
+                  ),
                 ),
                 onPressed: (){} 
               )
@@ -211,15 +213,18 @@ class _MyHomePageState extends State<MyHomePage> {
     _cameraViewController.takePicture();
   }
 
-  void _onPictureFileCreated(String filePath){
+  void _onPictureFileCreated(String filePath) async { 
       if( filePath == null  || filePath.isEmpty) {
           return;
       }
       showToast("Picture saved to " + filePath);
+
+      //Build thumbnail
+      Image image = new Image.file(new File(filePath) , width: 120, height: 120, 
+          fit: BoxFit.cover ,filterQuality: FilterQuality.low); 
+
       setState(() {
-        _thumbnailImage = new File(filePath);
-        //  _thumbnailImage = new Image.file(new File(filePath) ,width: 200, height: 200,
-        //     fit: BoxFit.cover ,filterQuality: FilterQuality.low); 
+        _thumbnailImage = image;
       });
   }
 
@@ -227,7 +232,7 @@ class _MyHomePageState extends State<MyHomePage> {
      Navigator.push(context, new MaterialPageRoute(builder: (context) => new SettingsPage()));
   }
 
-  void showToast(String msg){
+  void showToast(String msg) async {
     Fluttertoast.cancel(); //Hides previous toast message
     Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_SHORT , gravity: ToastGravity.CENTER);
   }
