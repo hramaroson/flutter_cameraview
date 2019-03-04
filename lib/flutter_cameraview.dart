@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
 
 typedef void CameraViewCreatedCallback(CameraViewController controller);
+typedef void CameraViewPictureFileCreated (String filePath);
 
 enum Facing {
   Back,
@@ -75,9 +76,14 @@ class CameraException implements Exception {
 
 class CameraViewController {
   CameraViewController._(int id)
-      : _channel = new MethodChannel('plugins.hramaroson.github.io/cameraview_$id');
+      :_channel = new MethodChannel('plugins.hramaroson.github.io/cameraview_$id'),
+      onPictureFileCreated = null {
+          _channel.setMethodCallHandler (_onMethodCall);
+      }
 
   final MethodChannel _channel;
+
+  CameraViewPictureFileCreated onPictureFileCreated;
 
   Future<bool> isOpened() async {
     try {
@@ -137,11 +143,23 @@ class CameraViewController {
       }
     }
     try {
-      await _channel.invokeMethod('takePicture', _filePath);
+       await _channel.invokeMethod('takePicture', _filePath);
     } on PlatformException catch (e) {
         throw CameraException(e.code, e.message);
         return null;
     }
     return _filePath;
+  }
+  Future<dynamic> _onMethodCall (MethodCall methodCall) async{
+     switch (methodCall.method) {
+       case "pictureFileCreated":
+          if(this.onPictureFileCreated != null){
+            this.onPictureFileCreated (methodCall.arguments);
+          }
+         break;
+       default:
+         break;
+     }
+     return new Future.value(null);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_cameraview/flutter_cameraview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -33,6 +34,7 @@ class MyHomePage extends StatefulWidget  {
 class _MyHomePageState extends State<MyHomePage> {
   CameraViewController _cameraViewController; 
   Icon _flashButtonIcon = Icon(Icons.flash_off);
+  File _thumbnailImage;
 
   @override
   void initState() {
@@ -73,10 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 60.0,
               left: (MediaQuery.of(context).size.width/2 - 30),
               child: new RaisedButton(
-                padding: EdgeInsets.all(10.0),
-                shape: new RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                ),
+                shape: new CircleBorder(),
                 child: new Icon(Icons.camera_alt, size: 30.0, color: Colors.blue),
                 onPressed: () => _onTakePictureButtonPressed(),
               ),
@@ -85,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
             //Camera facing button
             Positioned(
-              bottom:  (MediaQuery.of(context).size.height/2 - 80),
+              bottom:  (MediaQuery.of(context).size.height/2 - 100),
               width: 40.0,
               height: 40.0,
               right: 15.0,
@@ -107,6 +106,26 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: new Icon(Icons.settings, size: 25.0),
                 onPressed: () => _onSettingsButtonPressed(context),
               ),
+            ),
+
+            //thumbnail & gallery button
+            Positioned(
+              bottom: 20.0,
+              width: 40.0,
+              height: 40.0,
+              right: 15.0,
+              child: new RaisedButton(
+                color: Colors.black,
+                shape: new CircleBorder(),
+                padding: EdgeInsets.all(0),
+                child: CircleAvatar( 
+                  minRadius: 20.0,
+                  maxRadius: 20.0,
+                  backgroundColor: Colors.black,
+                  backgroundImage: _thumbnailImage == null ? null : FileImage(_thumbnailImage)
+                ),
+                onPressed: (){} 
+              )
             )
           ],
         ),
@@ -116,6 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
  
   void _onCameraViewCreated(CameraViewController controller){
       _cameraViewController = controller;
+      _cameraViewController.onPictureFileCreated = _onPictureFileCreated;
   }
 
   void _onFlashButtonPressed() async {
@@ -188,9 +208,19 @@ class _MyHomePageState extends State<MyHomePage> {
         showToast("Error: Camera not opened!");
         return;
     }
-    _cameraViewController.takePicture().then((String filePath) {
-      showToast("Image saved to " + filePath); }
-    );
+    _cameraViewController.takePicture();
+  }
+
+  void _onPictureFileCreated(String filePath){
+      if( filePath == null  || filePath.isEmpty) {
+          return;
+      }
+      showToast("Picture saved to " + filePath);
+      setState(() {
+        _thumbnailImage = new File(filePath);
+        //  _thumbnailImage = new Image.file(new File(filePath) ,width: 200, height: 200,
+        //     fit: BoxFit.cover ,filterQuality: FilterQuality.low); 
+      });
   }
 
   void _onSettingsButtonPressed(BuildContext context) async {

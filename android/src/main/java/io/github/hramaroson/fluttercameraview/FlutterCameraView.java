@@ -31,7 +31,7 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler,
     private final MethodChannel mMethodChanel;
     private final Context mContext;
 
-    private String mCapturedImagePath;
+    private String mCapturedPictureFilePath;
 
     FlutterCameraView(Context context, BinaryMessenger messenger, int id, Activity activity){
         mContext = context;
@@ -197,16 +197,20 @@ public class FlutterCameraView implements PlatformView, MethodCallHandler,
     }
 
     private void takePicture(MethodCall methodCall, MethodChannel.Result result) {
-        mCapturedImagePath = (String) methodCall.arguments;
+        mCapturedPictureFilePath = (String) methodCall.arguments;
 
         mCameraView.takePicture();
-        result.success (mCapturedImagePath);
+        result.success (mCapturedPictureFilePath);
     }
 
     private void onPicture(PictureResult result){
-        result.toFile(new File(mCapturedImagePath), new FileCallback() {
+        result.toFile(new File(mCapturedPictureFilePath), new FileCallback() {
             @UiThread
             public void onFileReady(@Nullable File file){
+                if(file != null){
+                    mMethodChanel.invokeMethod("pictureFileCreated", mCapturedPictureFilePath);
+                    mCapturedPictureFilePath = ""; 
+                }
             }
         });
     }
