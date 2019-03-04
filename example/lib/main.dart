@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter_cameraview/flutter_cameraview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'settings_page.dart';
 
@@ -126,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: _thumbnailImage
                   ),
                 ),
-                onPressed: (){} 
+                onPressed: () => _openImageGallery()
               )
             )
           ],
@@ -226,6 +227,10 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         _thumbnailImage = image;
       });
+  }
+
+  void _openImageGallery() async {
+    await ImagePicker.pickImage(source: ImageSource.gallery);
   }
 
   void _onSettingsButtonPressed(BuildContext context) async {
