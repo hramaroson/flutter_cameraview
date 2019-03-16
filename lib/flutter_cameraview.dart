@@ -145,8 +145,8 @@ class CameraViewController {
     try {
        await _channel.invokeMethod('takePicture', _filePath);
     } on PlatformException catch (e) {
+        _filePath = null;
         throw CameraException(e.code, e.message);
-        return null;
     }
     return _filePath;
   }
